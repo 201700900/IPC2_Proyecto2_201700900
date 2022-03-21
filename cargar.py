@@ -62,12 +62,12 @@ def leer():
 
 
 
-        print("\033[;32m"+ path + " cargado con exito"+'\033[0;m')
+        print("\t\033[;32m"+ path + " cargado con exito"+'\033[0;m')
 
     except:
-        print("\033[;31m"+ path, "no encontrado"+'\033[0;m')
+        print("\t\033[;31m"+ path, "no encontrado"+'\033[0;m')
 
 leer()
 for c in ListaCiudades:
-
-    c.gRows()
+    c.gConsola()
+    c.graph(c.nombre)
