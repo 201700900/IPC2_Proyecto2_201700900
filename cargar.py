@@ -5,11 +5,15 @@ import city
 import dron
 
 ListaCiudades = lista.LinkedList()
-ListaRobots = lista.LinkedList()
+ChapinRescue = lista.LinkedList()
+ChapinFighter = lista.LinkedList()
+
 
 def leer():
     global ListaCiudades
-    global ListaRobots
+    global ChapinRescue
+    global ChapinFighter
+
 
     path = 'x'#input("Introduzca la dirreción del XML:\n")
     try:
@@ -54,9 +58,9 @@ def leer():
             if tipo == "ChapinFighter":
                 capacidad = robot.find('nombre').attrib['capacidad']
                 #print(capacidad)
-                ListaRobots.Append(dron.Robot(nombre, tipo, capacidad))
+                ChapinFighter.Append(dron.Robot(nombre, tipo, capacidad))
             else:
-                ListaRobots.Append(dron.Robot(nombre, tipo, ''))
+                ChapinRescue.Append(dron.Robot(nombre, tipo, 'N/A'))
 
             
 
@@ -68,6 +72,7 @@ def leer():
         print("\t\033[;31m"+ path, "no encontrado"+'\033[0;m')
 
 leer()
-for c in ListaCiudades:
-    c.gConsola()
-    c.graph(c.nombre)
+# for c in ListaCiudades:
+#     c.gConsola()
+#     c.graph(c.nombre)
+

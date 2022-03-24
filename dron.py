@@ -6,7 +6,7 @@ class Robot:
         self.capacidad = capacidad
     
     def __str__(self):
-        String = "["+ self.nombre + ' ,'+ self.tipo + ' ,' + self.capacidad+ ']'
+        String = "["+ self.nombre + ', '+ self.tipo + ', ' + self.capacidad+ ']'
         return String
 
     

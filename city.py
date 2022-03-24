@@ -14,7 +14,7 @@ class Ciudad:
         self.Plot()
         self.addMili()
     
-    def gConsola(self):
+    def gConsola(self, n):
         grafica = ''
         nfila = 0
         for fila in self.matriz:
@@ -39,12 +39,7 @@ class Ciudad:
                 
                 elif(columna == 'M'):# R – representa un recurso
                     grafica +='🟥'
-
                     
-                # for unidad in self.militares:
-                #     if int(unidad.fila) == nfila and int(unidad.columna) == ncolumna:
-                #         grafica = grafica[:-1]
-                #         grafica +='🟥'
             grafica+=' '+str(nfila)        
             
             grafica += '\n\t\t'    
@@ -55,14 +50,19 @@ class Ciudad:
                 grafica += str(i)
 
         Tabla="""\
-        |     Ciudad: {0}  
+        +---------------------------------------------------------------------+
+        |                         Ciudad {0}: {1:^2}                                                                                   
+        |---------------------------------------------------------------------|
+        |         Unidades militares: {3}
+        |         Unidades civiles: {4}
+        |         Recursos: {5}
         |
-        |       {1}
+        |       {2}
         |
         +---------------------------------------------------------------------+\
         """
 
-        Tabla = (Tabla.format(str(self.nombre), str(grafica),)) 
+        Tabla = (Tabla.format(str(n), str(self.nombre), str(grafica), str(len(self.militares)), str(len(self.civiles)), str(len(self.recursos)))) 
         print(Tabla)
 
     def Plot(self):
@@ -150,8 +150,8 @@ class Ciudad:
         h.node( 'tab', shape='rect', label = table)
         h.format = 'png'
 
-        h.render(directory='grafica-patrones', view=True).replace('\\', '/')
-        'grafica-patrones/'+titulo +'.gv.png'
+        h.render(directory='grafica', view=True).replace('\\', '/')
+        'grafica/'+titulo +'.gv.png'
 
     def addMili(self):
         nfila = 0

@@ -15,7 +15,7 @@ def graph(lista, titulo):
 
     table += '</TABLE>>'    
 
-    h.node( 'tab', shape='rect', label = table)
+    h.node( 'tab', shape='rect', label = table, fontsize="80")
     h.format = 'png'
 
     h.render(directory='grafica-patrones', view=True).replace('\\', '/')
