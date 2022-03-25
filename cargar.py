@@ -33,7 +33,8 @@ def leer():
             for fila in ciudad.iter('fila'):#obtener cada fila
                 columna = lista.LinkedList()
                 for c in fila.text:
-                    columna.Append(c)
+                    if c!='"':
+                        columna.Append(c)
                 #print(columna)    
                 malla.Append(columna)
                 #print(fila.text)
@@ -73,6 +74,6 @@ def leer():
 
 leer()
 # for c in ListaCiudades:
-#     c.gConsola()
+#     c.gConsola(1)
 #     c.graph(c.nombre)
 

@@ -11,6 +11,7 @@ class Ciudad:
         self.entradas = lista.LinkedList()
         self.recursos = lista.LinkedList()
         self.civiles = lista.LinkedList()
+        self.escenario = lista.LinkedList()
         self.Plot()
         self.addMili()
     
@@ -39,6 +40,9 @@ class Ciudad:
                 
                 elif(columna == 'M'):# R – representa un recurso
                     grafica +='🟥'
+                
+                elif(columna == '+'):# + – representa el recorrido
+                    grafica +='🟨'
                     
             grafica+=' '+str(nfila)        
             
@@ -69,7 +73,7 @@ class Ciudad:
         nfila = 0
         for fila in self.matriz:
             nfila+=1
-            ncolumna = -1
+            ncolumna = 0
             for columna in fila:
                 ncolumna += 1
                    
@@ -110,7 +114,7 @@ class Ciudad:
         for fila in self.matriz:
             nfila+=1
 
-            ncolumna = -1
+            ncolumna = 0
             table += '<TR>'
             table+='<TD border="3"  height="40">'+str(nfila)+'</TD>'
 
@@ -142,6 +146,8 @@ class Ciudad:
                 elif(columna == 'M'):
                     table += '<TD  border="3"  height="40" bgcolor="red"></TD>'
 
+                elif(columna == '+'):
+                    table += '<TD  border="3"  height="40" bgcolor="yellow"></TD>'
                 
             table += '</TR>'
 
@@ -154,14 +160,15 @@ class Ciudad:
         'grafica/'+titulo +'.gv.png'
 
     def addMili(self):
+        print(self.militares)
         nfila = 0
         for fila in self.matriz:
             nfila+=1
-            ncolumna = -1
+            ncolumna = 0
             for columna in fila:
                 ncolumna += 1
                 for unidad in self.militares:
                     if int(unidad.fila) == nfila and int(unidad.columna) == ncolumna:
-                        self.matriz[nfila-1][ncolumna]='M'
+                        self.matriz[nfila-1][ncolumna-1]='M'
       
                 

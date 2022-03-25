@@ -39,14 +39,14 @@ class LinkedList:
         
         return String
     
-    def __setitem__(self, indice, dato):
+    def __setitem__(self, indice, Value):
         if indice >= 0 and indice < self.Size:
             actual = self.First
 
             for _ in range(indice):
                 actual = actual.Next
             
-            actual.Value = dato
+            actual.Value = Value
         else:
             return False
             #raise Exception('Índice no válido. Está por fuera del rango.')
@@ -69,30 +69,46 @@ class LinkedList:
         
         else:
             Current = self.First
-            while Current. Next != None:
+            while Current.Next != None:
                  Current = Current.Next
             Current.Next = MyNode
         self.Size += 1
         
         return MyNode
     
-    def Remove(self, Value):
+    def Pop(self):
         if self.Size == 0:
-            return False
-        
+            return ''
         else:
-            Current = self.First
-            try:
-                 while Current.Next.Value != Value:
-                     Current = Current.Next
-                 DeletedNode = Current.Next
-                 Current.Next = DeletedNode.Next
-            
-            except AttributeError:
-                 return False
-        
+            DeletedNode = self.First
+            self.First = self.First.Next
         self.Size -= 1
-        return DeletedNode
+        return DeletedNode.Value
+
+    def Remove(self, Value):
+        actual = self.First
+        anterior = self.First
+        eliminado = False
+
+        if actual is None:
+            eliminado = False
+        elif actual.Value == Value:
+            self.First = actual.Next
+            eliminado = True
+        else:
+            while actual:
+                if actual.Value == Value:
+                    # Antes: 2 = 3 = 5 = 7 = 11
+                    # Actual: 3
+                    # Después: 2 = 5 = 7 = 11
+                    anterior.Next = actual.Next
+                    eliminado = True
+                anterior = actual
+                actual = actual.Next
+        
+        if eliminado:
+            self.Size -= 1
+
 
     def Buscar(self, Value):
         if self.Size == 0:
@@ -102,10 +118,9 @@ class LinkedList:
             try:
                  while Current.Next.Value != Value:
                      Current = Current.Next
-                 return Current.Next
+                 return True
             except AttributeError:
                  return False
 
         
         
- 
