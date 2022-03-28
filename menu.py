@@ -1,3 +1,6 @@
+import cargar
+import rescate
+import combate
 def entrada():
 
     correcto=False
@@ -27,7 +30,10 @@ while not salir:
     opcion = entrada()
 
     if opcion == 1:
-        pass
+        cargar.leer()
+        for c in cargar.ListaCiudades:
+            c.gConsola(1)
+            c.graph(c.nombre)
     elif opcion == 2:
         pass
     elif opcion == 3:

@@ -12,8 +12,12 @@ class Ciudad:
         self.recursos = lista.LinkedList()
         self.civiles = lista.LinkedList()
         self.escenario = lista.LinkedList()
+        self.mision = None
         self.Plot()
         self.addMili()
+
+    def setMision(self):
+        self.mision = self.matriz
     
     def gConsola(self, n):
         grafica = ''
@@ -29,16 +33,16 @@ class Ciudad:
                 elif(columna == ' '):# transitable
                     grafica +='⬜'
 
-                elif(columna == 'E'):#E - punto de entrada
+                elif(columna == 'E' or columna == 'E+'):#E - punto de entrada
                     grafica +='🟩'
 
-                elif(columna == 'C'):# C – representa una unidad civil 
+                elif(columna == 'C' or columna == 'C+'):# C – representa una unidad civil 
                     grafica +='🟦' 
 
-                elif(columna == 'R'):# R – representa un recurso
+                elif(columna == 'R' or columna == 'R+'):# R – representa un recurso
                     grafica +='🟫' 
                 
-                elif(columna == 'M'):# R – representa un recurso
+                elif(columna == 'M' or columna == 'M+'):# R – representa un recurso
                     grafica +='🟥'
                 
                 elif(columna == '+'):# + – representa el recorrido
@@ -108,7 +112,7 @@ class Ciudad:
         table+='<TD border="3"  height="40"></TD>'
 
         for n in range(1, self.columnas+1):
-            table+='<TD border="3"  height="40">'+str(n)+'</TD>'
+            table+='<TD border="3"  height="40" bgcolor = "PaleTurquoise" >'+str(n)+'</TD>'
         table+='</TR>'
     
         for fila in self.matriz:
@@ -116,7 +120,7 @@ class Ciudad:
 
             ncolumna = 0
             table += '<TR>'
-            table+='<TD border="3"  height="40">'+str(nfila)+'</TD>'
+            table+='<TD border="3"  height="40" bgcolor = "PaleTurquoise">'+str(nfila)+'</TD>'
 
             for columna in fila:
                 ncolumna += 1
@@ -132,22 +136,108 @@ class Ciudad:
 
 
                 elif(columna == 'E'):#E - punto de entrada
-                    table += '<TD  border="3"  height="40" bgcolor="green">'+str(entrada)+'</TD>'
+                    table += '<TD  border="1"  height="40" bgcolor="green">'+str(entrada)+'</TD>'
+                    entrada+=1
+                elif(columna == 'E+'):#E - punto de entrada
+                    table += '<TD  border="1"  height="40" bgcolor="yellowgreen">'+str(entrada)+'</TD>'
                     entrada+=1
 
                 elif(columna == 'C'):# C – representa una unidad civil 
-                    table += '<TD  border="3"  height="40" bgcolor="blue">'+str(civil)+'</TD>'
+                    table += '<TD  border="1"  height="40" bgcolor="blue">'+str(civil)+'</TD>'
+                    civil+=1
+                elif(columna == 'C+'):# C – representa una unidad civil 
+                    table += '<TD  border="1"  height="40" bgcolor="blue">'+str(civil)+'</TD>'
                     civil+=1
 
                 elif(columna == 'R'):# R – representa un recurso
-                    table += '<TD  border="3"  height="40" bgcolor="gray">'+str(recurso)+'</TD>'
+                    table += '<TD  border="1"  height="40" bgcolor="darkgray">'+str(recurso)+'</TD>'
                     recurso+=1
+                elif(columna == 'R+'):# R – representa un recurso
+                    table += '<TD  border="1"  height="40" bgcolor="darkgray">'+str(recurso)+'</TD>'
+                    recurso+=1
+                    
                 
                 elif(columna == 'M'):
-                    table += '<TD  border="3"  height="40" bgcolor="red"></TD>'
+                    table += '<TD  border="1"  height="40" bgcolor="red"></TD>'
+                elif(columna == 'M+'):
+                    table += '<TD  border="1"  height="40" bgcolor="darkorange"></TD>'
 
                 elif(columna == '+'):
-                    table += '<TD  border="3"  height="40" bgcolor="yellow"></TD>'
+                    table += '<TD  border="1"  height="40" bgcolor="yellow"></TD>'
+                
+            table += '</TR>'
+
+        table += '</TABLE>>'    
+
+        h.node( 'tab', shape='rect', label = table)
+        h.format = 'png'
+
+        h.render(directory='grafica', view=True).replace('\\', '/')
+        'grafica/'+titulo +'.gv.png'
+
+    def gMision(self, titulo):
+        entrada = 1
+        recurso = 1
+        civil = 1
+        h = graphviz.Graph(titulo)  
+        table = '<<TABLE  border="10" cellspacing="1" cellpadding="40" style="rounded">'
+        nfila = 0
+        table+='<TR>'
+        table+='<TD border="3"  height="40"></TD>'
+
+        for n in range(1, self.columnas+1):
+            table+='<TD border="3"  height="40" bgcolor = "PaleTurquoise" >'+str(n)+'</TD>'
+        table+='</TR>'
+    
+        for fila in self.mision:
+            nfila+=1
+
+            ncolumna = 0
+            table += '<TR>'
+            table+='<TD border="3"  height="40" bgcolor = "PaleTurquoise">'+str(nfila)+'</TD>'
+
+            for columna in fila:
+                ncolumna += 1
+            
+            
+                if(columna =='*'):# * - intrasitable
+
+                    table += '<TD  border="3"  height="40" bgcolor="black"></TD>'
+
+                    
+                elif(columna == ' '):# transitable
+                    table += '<TD  border="1"  height="40" bgcolor="white"></TD>'
+
+
+                elif(columna == 'E'):#E - punto de entrada
+                    table += '<TD  border="1"  height="40" bgcolor="green">'+str(entrada)+'</TD>'
+                    entrada+=1
+                elif(columna == 'E+'):#E - punto de entrada
+                    table += '<TD  border="1"  height="40" bgcolor="yellowgreen">'+str(entrada)+'</TD>'
+                    entrada+=1
+
+                elif(columna == 'C'):# C – representa una unidad civil 
+                    table += '<TD  border="1"  height="40" bgcolor="blue">'+str(civil)+'</TD>'
+                    civil+=1
+                elif(columna == 'C+'):# C – representa una unidad civil 
+                    table += '<TD  border="1"  height="40" bgcolor="blue">'+str(civil)+'</TD>'
+                    civil+=1
+
+                elif(columna == 'R'):# R – representa un recurso
+                    table += '<TD  border="1"  height="40" bgcolor="darkgray">'+str(recurso)+'</TD>'
+                    recurso+=1
+                elif(columna == 'R+'):# R – representa un recurso
+                    table += '<TD  border="1"  height="40" bgcolor="darkgray">'+str(recurso)+'</TD>'
+                    recurso+=1
+                    
+                
+                elif(columna == 'M'):
+                    table += '<TD  border="1"  height="40" bgcolor="red"></TD>'
+                elif(columna == 'M+'):
+                    table += '<TD  border="1"  height="40" bgcolor="darkorange"></TD>'
+
+                elif(columna == '+'):
+                    table += '<TD  border="1"  height="40" bgcolor="yellow"></TD>'
                 
             table += '</TR>'
 
@@ -160,7 +250,6 @@ class Ciudad:
         'grafica/'+titulo +'.gv.png'
 
     def addMili(self):
-        print(self.militares)
         nfila = 0
         for fila in self.matriz:
             nfila+=1

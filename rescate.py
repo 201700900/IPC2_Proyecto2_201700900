@@ -24,7 +24,7 @@ def chooseDron(dronTipo):
         | {0:<2}     {1:<12}        {2:20}                 {3:>3} 
         |---------------------------------------------------------------------|\
         """
-            Tabla = Tabla.format(n, dron.tipo, dron.nombre, dron.capacidad)
+            Tabla = Tabla.format(n, dron.tipo, dron.nombre, 'N/A')
         print(Tabla)
         op = int(input("\033[;34m"+"Introduce el numero de robot para la misión: "+'\033[0;m'))
         dronActual = dronTipo[int(op)-1]
@@ -184,18 +184,29 @@ def pathFinding():
             if actual == fin:#SI HEMOS LLEGADO AL FINAL BUSCAMOS EL CAMINO DE VUELTA
                 temporal = actual
                 camino.Append(temporal)
+                cityActual.setMision()
 
                 print(principio.padre)
                 while temporal.padre != principio:
                      temporal = temporal.padre
                      camino.Append(temporal)
                 
-                for spot in camino:
-                    cityActual.matriz[spot.y][spot.x]='+'
-                cityActual.matriz[fin.y][fin.x]='C'
+                for spot in reversed(camino):
+                    x+=1
+                    if cityActual.mision[spot.y][spot.x]=='E':
+                        cityActual.mision[spot.y][spot.x]='E+'
+                    elif cityActual.mision[spot.y][spot.x]=='C':
+                        cityActual.mision[spot.y][spot.x]='C+'  
+                    elif cityActual.mision[spot.y][spot.x]=='R':
+                        cityActual.mision[spot.y][spot.x]='R+'
+                    elif cityActual.mision[spot.y][spot.x]=='M':
+                        cityActual.mision[spot.y][spot.x]='M+'  
+                    else:
+                        cityActual.mision[spot.y][spot.x]='+' 
+                cityActual.mision[fin.y][fin.x]='C'
                 print("\t\033[;32m"+'CAMINO ENCONTRADO'+'\033[0;m')
                 cityActual.gConsola(1)
-                cityActual.graph('Misión rescate')
+                cityActual.gMision('Misión rescate')
                 terminado = True
             else: #SI NO HEMOS LLEGADO AL FINAL, SEGUIMOS
                 openSet.Remove(actual)

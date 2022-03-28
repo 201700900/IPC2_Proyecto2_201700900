@@ -3,7 +3,7 @@ import linkedList as lista
 
 dronActual = None
 cityActual = None
-civilActual = None
+recursoActual = None
 
 
 def chooseDron(dronTipo):
@@ -29,7 +29,7 @@ def chooseDron(dronTipo):
         op = int(input("\033[;34m"+"Introduce el numero de robot para la misión: "+'\033[0;m'))
         dronActual = dronTipo[int(op)-1]
     print(dronActual)
-chooseDron(cargar.ChapinRescue)
+chooseDron(cargar.ChapinFighter)
 
 def chooseCity():
     global cityActual
@@ -46,18 +46,18 @@ def chooseCity():
         cityActual.gConsola(op)
 chooseCity()
 
-def chooseCivil():
-    global civilActual
-    if len(cityActual.civiles) == 1:
-        civilActual = cityActual.civiles[0]
-    elif len(cityActual.civiles)>1: 
+def chooseRecurso():
+    global recursoActual
+    if len(cityActual.recursos) == 1:
+        recursoActual = cityActual.recursos[0]
+    elif len(cityActual.recursos)>1: 
         Tabla = """\
         +---------------------------------------------------------------------+
-        | No.     Coordernada Unidad Civil                                    |
+        | No.     Coordernada Recurso                                         |
         |---------------------------------------------------------------------|\
         """
         n=0
-        for coordeneada in cityActual.civiles:
+        for coordeneada in cityActual.recursos:
             n+=1
             Tabla += """\
             
@@ -66,9 +66,9 @@ def chooseCivil():
         """
             Tabla = Tabla.format(n, coordeneada[0],  coordeneada[1])
         print(Tabla)
-        op = int(input("\033[;34m"+"Introduce el numero de civil a rescatar para la misión: "+'\033[0;m'))
-        civilActual = cityActual.civiles[int(op)-1]
-chooseCivil()
+        op = int(input("\033[;34m"+"Introduce el numero de recurso para la misión: "+'\033[0;m'))
+        recursoActual = cityActual.recursos[int(op)-1]
+chooseRecurso()
 def chooseEntrada():
     global entradaActual
     if len(cityActual.entradas) == 1:
@@ -102,7 +102,7 @@ def heuristica(a,b):
 class Casilla:
     global cityActual
 
-    def __init__(self, x, y, tipo):
+    def __init__(self, x, y, tipo, c=0):
         self.x = x
         self.y = y
         self.tipo = tipo
@@ -110,7 +110,7 @@ class Casilla:
         self.f = 0  #coste total (g+h)
         self.g = 0  #pasos dados
         self.h = 0  #heurística (estimación de lo que queda)
-
+        self.c = c  #combate
         self.vecinos = lista.LinkedList()
         self.padre = None
         self.recorrido = lista.LinkedList()
@@ -133,7 +133,7 @@ class Casilla:
 
 def pathFinding():
     global entradaActual
-    global civilActual
+    global recursoActual
     global cityActual
 
     openSet = lista.LinkedList()
@@ -149,8 +149,13 @@ def pathFinding():
         lfila = lista.LinkedList()
         for columna in fila:
             x += 1
-            if columna == ' ' or columna == 'E' or columna == 'C' :
+            if columna == ' ' or columna == 'E' or columna == 'R' or columna == 'C'  :
                 lfila.Append(Casilla(x,y,0))
+                
+            elif columna == 'M':
+                for mili in cityActual.militares:
+                    if int(mili.fila) == y+1 and int(mili.columna) == x+1:
+                        lfila.Append(Casilla(x,y,2, int(mili.combate)))
             else:
                 lfila.Append(Casilla(x,y,1))
                 
@@ -160,7 +165,7 @@ def pathFinding():
     for fila in cityActual.escenario:
         for columna in fila:
             columna.addVecinos()
-    fin = cityActual.escenario[civilActual[0]-1][civilActual[1]-1]
+    fin = cityActual.escenario[recursoActual[0]-1][recursoActual[1]-1]
     principio = cityActual.escenario[entradaActual[0]-1][entradaActual[1]-1]
     print(principio)
     print(fin)
@@ -180,30 +185,78 @@ def pathFinding():
                 if openSet[i].f < openSet[ganador].f:
                     ganador = i
 
-            actual = openSet[ganador]
+            actual = openSet[ganador]#Analizamos la casilla ganadora
+
             if actual == fin:#SI HEMOS LLEGADO AL FINAL BUSCAMOS EL CAMINO DE VUELTA
                 temporal = actual
                 camino.Append(temporal)
+                exito = True
+                cityActual.setMision()
+                dronMision = dronActual
 
-                print(principio.padre)
                 while temporal.padre != principio:
                      temporal = temporal.padre
                      camino.Append(temporal)
                 
-                for spot in camino:
-                    cityActual.matriz[spot.y][spot.x]='+'
-                cityActual.matriz[fin.y][fin.x]='C'
-                print("\t\033[;32m"+'CAMINO ENCONTRADO'+'\033[0;m')
-                cityActual.gConsola(1)
-                cityActual.graph('Misión rescate')
+                for spot in reversed(camino):
+                    x+=1
+                    if cityActual.mision[spot.y][spot.x]=='E':
+                        cityActual.mision[spot.y][spot.x]='E+'
+                    elif cityActual.mision[spot.y][spot.x]=='C':
+                        cityActual.mision[spot.y][spot.x]='C+'  
+                    elif cityActual.mision[spot.y][spot.x]=='R':
+                        cityActual.mision[spot.y][spot.x]='R+'  
+
+                    elif spot.tipo == 2:
+                        if (dronMision.capacidad) >= spot.c:
+                            dronMision.capacidad -+ spot.c
+                            cityActual.mision[spot.y][spot.x]='M+' 
+                            exito = True
+                        else:
+                            exito = False
+                            break
+                    else: 
+                        cityActual.mision[spot.y][spot.x]='+'
+
+
+
+
+
+                        
+                    cityActual.mision[principio.y][principio.x]='E' 
+                    cityActual.mision[fin.y][fin.x]='R'  
+                    cityActual.gMision(str(x))
+
+                if exito:
+                    for spot in camino:
+                        if spot.tipo == 2:
+                            for unidad in cityActual.militares:
+                                if unidad.fila == spot.y and unidad.columna == spot.x:
+                                    unidad.combate = 0
+
+
+
+
+                    print("\t\033[;32m"+'CAMINO ENCONTRADO'+'\033[0;m')
+                    cityActual.gConsola(1)
+                    cityActual.gMision('Misión rescate')
                 terminado = True
             else: #SI NO HEMOS LLEGADO AL FINAL, SEGUIMOS
                 openSet.Remove(actual)
                 closedSet.Append(actual)
-                for vecino in actual.vecinos:
-                    if not closedSet.Buscar(vecino) and vecino.tipo!=1:
-                        tempG = actual.g + 1
-                        if openSet.Buscar(vecino):
+                for vecino in actual.vecinos:#RECORRO LOS VECINOS DE MI GANADOR
+
+                    
+
+
+                    if not closedSet.Buscar(vecino) and vecino.tipo!=1:#SI EL VECINO NO ESTÁ EN CLOSEDSET Y NO ES UNA PARED, HACEMOS LOS CÁLCULOS
+                        if actual.tipo == 2:
+                            tempG += actual.c
+                        else:
+                            tempG = actual.g + 1
+
+
+                        if openSet.Buscar(vecino):#si el vecino está en OpenSet y su peso es mayor
                             if tempG < vecino.g:
                                 vecino.g = tempG
                         else:
@@ -213,7 +266,6 @@ def pathFinding():
                         vecino.h = heuristica(vecino,fin)
                         vecino.f = vecino.g + vecino.h
                         vecino.padre = actual
-                        vecino.recorrido.Append(actual)
         else:
             print("\t\033[;31m"+'NO HAY CAMINO POSIBLE'+'\033[0;m')
             terminado = True    

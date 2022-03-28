@@ -24,6 +24,15 @@ def leer():
             #print(ciudad.tag)#obtener cada ciudad
             malla = lista.LinkedList()
             nombre = ciudad.find('nombre').text
+            
+            is_in_list = False
+            index = 0
+            for ci in ListaCiudades:#comprobar si la ciudad existe ya en la lista
+                if ci.nombre ==  ciudad.find('nombre').text:
+                    is_in_list=True
+                    break
+                index+=1
+            
             nfilas = ciudad.find('nombre').attrib['filas']
             ncolumnas = ciudad.find('nombre').attrib['columnas']
 
@@ -32,7 +41,7 @@ def leer():
 
             for fila in ciudad.iter('fila'):#obtener cada fila
                 columna = lista.LinkedList()
-                for c in fila.text:
+                for c in fila.text: 
                     if c!='"':
                         columna.Append(c)
                 #print(columna)    
@@ -45,9 +54,13 @@ def leer():
                 ufila = unidad.attrib['fila']
                 ucolumna = unidad.attrib['columna']
                 poder = unidad.text
+                
                 militares.Append(milicia.Militar(ufila, ucolumna, poder))
-
-            ListaCiudades.Append(city.Ciudad(nombre, malla, nfilas, ncolumnas, militares))  
+                
+            if is_in_list:
+                ListaCiudades[index] = city.Ciudad(nombre, malla, nfilas, ncolumnas, militares)
+            else: 
+                ListaCiudades.Append(city.Ciudad(nombre, malla, nfilas, ncolumnas, militares))  
         ####################################################################################
         for robot in root[1]:#root[0] es robots
             #print(robot.tag)#obtener cada robot
@@ -59,9 +72,21 @@ def leer():
             if tipo == "ChapinFighter":
                 capacidad = robot.find('nombre').attrib['capacidad']
                 #print(capacidad)
-                ChapinFighter.Append(dron.Robot(nombre, tipo, capacidad))
+                r= False
+                for rob in ChapinFighter:
+                    if rob.nombre == nombre:
+                        rob = dron.Robot(nombre, tipo, capacidad)
+                        r = True
+                if not r:
+                    ChapinFighter.Append(dron.Robot(nombre, tipo, capacidad))
             else:
-                ChapinRescue.Append(dron.Robot(nombre, tipo, 'N/A'))
+                r= False
+                for rob in ChapinFighter:
+                    if rob.nombre == nombre:
+                        rob = dron.Robot(nombre, tipo, 0)
+                        r = True
+                if not r:
+                    ChapinRescue.Append(dron.Robot(nombre, tipo, 0))
 
             
 
@@ -73,7 +98,8 @@ def leer():
         print("\t\033[;31m"+ path, "no encontrado"+'\033[0;m')
 
 leer()
-# for c in ListaCiudades:
-#     c.gConsola(1)
-#     c.graph(c.nombre)
+leer()
+for c in ListaCiudades:
+    c.gConsola(1)
+    c.graph(c.nombre)
 
