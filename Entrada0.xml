@@ -1,0 +1,99 @@
+<?xml version="1.0"?>
+<configuracion>
+    <listaCiudades>
+        <ciudad>
+            <nombre filas="30" columnas="30">CiudadGotica</nombre>
+            <fila numero="1">"***** **** ************ ** ***"</fila>
+            <fila numero="2">"*****  * * * **     *** ** * "*</fila>
+            <fila numero="3">"******  **** ****** *** ** * "*</fila>
+            <fila numero="4">"*   ** **           *   ** * "*</fila>
+            <fila numero="5">" *** * ** *********** ***  * "*</fila>
+            <fila numero="6">" * * * ** *           * * *  "*</fila>
+            <fila numero=" 7">" *   * ** **** *** **** *  * "*</fila>
+            <fila numero="8">"****** ** ** * * *** ** ** * "*</fila>
+            <fila numero="9">"**   * ** ** ***         * * "*</fila>
+            <fila numero="10">"* * ** **         ** ***** * *"</fila>
+            <fila numero="11">"**   * ********** ** *     * *"</fila>
+            <fila numero="12">"******          * ** * ***** *"</fila>
+            <fila numero="13">"**   * ************* * *     *"</fila>
+            <fila numero="14">"* **** *             * ***** *"</fila>
+            <fila numero="15">"**  ** *             *     * *"</fila>
+            <fila numero="16">"* **** ************* * ***** *"</fila>
+            <fila numero="17">"**   *             * * *     *"</fila>
+            <fila numero="18">"****** ************* * ***** *"</fila>
+            <fila numero="19">"**   *     *         *     * *"</fila>
+            <fila numero="20">"* **** ***** ******* * ***** *"</fila>
+            <fila numero="21">"**  ** ************* * *     *"</fila>
+            <fila numero="22">"* **** **** ******** * ***** *"</fila>
+            <fila numero="23">"**   * ** * ******** *     * *"</fila>
+            <fila numero="24">"****** *  * ******** * ***** *"</fila>
+            <fila numero="25">"**   *   ** ******** * *     *"</fila>
+            <fila numero="26">"* * ******* ******** * ***** *"</fila>
+            <fila numero="27">"**   *      *******  *     * *"</fila>
+            <fila numero="28">"****** ************ ******** *"</fila>
+            <fila numero="29">"*****  ************ *      * *"</fila>
+            <fila numero="30">"***** ************* * ****** *"</fila>
+
+
+            <unidadMilitar fila="5" columna="14">70</unidadMilitar>
+            <unidadMilitar fila="5" columna="19">20</unidadMilitar>
+            <unidadMilitar fila="5" columna="20">20</unidadMilitar>
+            <unidadMilitar fila="8" columna="16">60</unidadMilitar>
+            <unidadMilitar fila="11" columna="7">20</unidadMilitar>
+            <unidadMilitar fila="11" columna="14">100</unidadMilitar>
+            <unidadMilitar fila="14" columna="10">20</unidadMilitar>
+            <unidadMilitar fila="5" columna="6">50</unidadMilitar>
+            <unidadMilitar fila="10" columna="4">100</unidadMilitar>
+        </ciudad>
+        <ciudad>
+            <nombre filas="10" columnas="10">CiudadGuate</nombre>
+            <fila numero="1">"**********"</fila>
+            <fila numero="2">"***   C  R"</fila>
+            <fila numero="3">"*** ******"</fila>
+            <fila numero="4">"*** ******"</fila>
+            <fila numero="5">"***     C*"</fila>
+            <fila numero="6">"E   ******"</fila>
+            <fila numero="7">"*** ******"</fila>
+            <fila numero="8">"*** *****C"</fila>
+            <fila numero="9">"*** ******"</fila>
+            <fila numero="10">"***      R"</fila>
+            <unidadMilitar fila="2" columna="5">100</unidadMilitar>
+            <unidadMilitar fila="5" columna="5">200</unidadMilitar>
+        </ciudad>
+    </listaCiudades>
+    <robots>
+        <robot>
+            <nombre tipo="ChapinFighter" capacidad="50">Robocop</nombre>
+        </robot>
+        <robot>
+            <nombre tipo="ChapinRescue">Ironman</nombre>
+        </robot>
+        <robot>
+            <nombre tipo="ChapinFighter" capacidad="25">MaxSteel</nombre>
+        </robot>
+        <robot>
+            <nombre tipo="ChapinRescue">OptimusPrime</nombre>
+        </robot>
+        <robot>
+            <nombre tipo="ChapinFighter" capacidad="100">Megatron1</nombre>
+        </robot>
+        <robot>
+            <nombre tipo="ChapinFighter" capacidad="100">Megatron2</nombre>
+        </robot>
+        <robot>
+            <nombre tipo="ChapinFighter" capacidad="100">Megatron3</nombre>
+        </robot>
+        <robot>
+            <nombre tipo="ChapinFighter" capacidad="100">Megatron4</nombre>
+        </robot>
+        <robot>
+            <nombre tipo="ChapinFighter" capacidad="100">Megatron5</nombre>
+        </robot>
+        <robot>
+            <nombre tipo="ChapinFighter" capacidad="100">Megatron6</nombre>
+        </robot>
+        <robot>
+            <nombre tipo="ChapinFighter" capacidad="100">Megatron7</nombre>
+        </robot>
+    </robots>
+</configuracion>

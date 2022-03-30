@@ -31,13 +31,15 @@ while not salir:
 
     if opcion == 1:
         cargar.leer()
+        n=1
         for c in cargar.ListaCiudades:
-            c.gConsola(1)
+            c.gConsola( c.matriz, n)
             c.graph(c.nombre)
+            n+=1
     elif opcion == 2:
-        pass
+        rescate.mision()
     elif opcion == 3:
-        pass
+        combate.mision()
     
     elif opcion == 4:
         salir = True

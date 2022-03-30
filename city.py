@@ -1,3 +1,4 @@
+from copy import deepcopy
 import graphviz  
 import linkedList as lista
 class Ciudad:
@@ -17,12 +18,12 @@ class Ciudad:
         self.addMili()
 
     def setMision(self):
-        self.mision = self.matriz
+        self.mision = deepcopy(self.matriz)
     
-    def gConsola(self, n):
+    def gConsola(self, lista, n):
         grafica = ''
         nfila = 0
-        for fila in self.matriz:
+        for fila in lista:
             nfila+=1
 
             for columna in fila:
@@ -102,6 +103,7 @@ class Ciudad:
                 
 
     def graph(self, titulo):
+        self.addMili()
         entrada = 1
         recurso = 1
         civil = 1
@@ -139,28 +141,27 @@ class Ciudad:
                     table += '<TD  border="1"  height="40" bgcolor="green">'+str(entrada)+'</TD>'
                     entrada+=1
                 elif(columna == 'E+'):#E - punto de entrada
-                    table += '<TD  border="1"  height="40" bgcolor="yellowgreen">'+str(entrada)+'</TD>'
+                    table += '<TD  border="1"  height="40" bgcolor="green" color = "yellow">'+str(entrada)+'</TD>'
                     entrada+=1
 
                 elif(columna == 'C'):# C – representa una unidad civil 
-                    table += '<TD  border="1"  height="40" bgcolor="blue">'+str(civil)+'</TD>'
+                    table += '<TD  border="1"  height="40" bgcolor="blue" >'+str(civil)+'</TD>'
                     civil+=1
                 elif(columna == 'C+'):# C – representa una unidad civil 
-                    table += '<TD  border="1"  height="40" bgcolor="blue">'+str(civil)+'</TD>'
+                    table += '<TD  border="1"  height="40" bgcolor="blue" color = "yellow">'+str(civil)+'</TD>'
                     civil+=1
 
                 elif(columna == 'R'):# R – representa un recurso
                     table += '<TD  border="1"  height="40" bgcolor="darkgray">'+str(recurso)+'</TD>'
                     recurso+=1
                 elif(columna == 'R+'):# R – representa un recurso
-                    table += '<TD  border="1"  height="40" bgcolor="darkgray">'+str(recurso)+'</TD>'
+                    table += '<TD  border="1"  height="40" bgcolor="darkgray" color = "yellow">'+str(recurso)+'</TD>'
                     recurso+=1
                     
                 
                 elif(columna == 'M'):
                     table += '<TD  border="1"  height="40" bgcolor="red"></TD>'
-                elif(columna == 'M+'):
-                    table += '<TD  border="1"  height="40" bgcolor="darkorange"></TD>'
+                
 
                 elif(columna == '+'):
                     table += '<TD  border="1"  height="40" bgcolor="yellow"></TD>'

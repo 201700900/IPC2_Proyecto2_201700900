@@ -1,9 +1,11 @@
+from copy import deepcopy
 import cargar
 import linkedList as lista
 
 dronActual = None
 cityActual = None
 recursoActual = None
+misionID = 1
 
 
 def chooseDron(dronTipo):
@@ -28,23 +30,24 @@ def chooseDron(dronTipo):
         print(Tabla)
         op = int(input("\033[;34m"+"Introduce el numero de robot para la misión: "+'\033[0;m'))
         dronActual = dronTipo[int(op)-1]
-    print(dronActual)
-chooseDron(cargar.ChapinFighter)
 
 def chooseCity():
     global cityActual
     if len(cargar.ListaCiudades) == 1:
         cityActual = cargar.ListaCiudades[0]
-        cityActual.gConsola(op)
+        cityActual.gConsola(cityActual.matriz, op)
     elif len(cargar.ListaCiudades)>1: 
         n=0
         for ciudad in cargar.ListaCiudades:
             n+=1
-            ciudad.gConsola(n)
+            ciudad.gConsola(ciudad.matriz, n)
         op = int(input("\033[;34m"+"Introduce el numero de ciudad para la misión: "+'\033[0;m'))
-        cityActual = cargar.ListaCiudades[int(op)-1]
-        cityActual.gConsola(op)
-chooseCity()
+        if op > len(cargar.ListaCiudades):
+            print("\t\033[;31m"+'Introduce un numero entre 1 y '+str(len(cargar.ListaCiudades))+'\033[0;m')
+            chooseCity()
+        else:
+            cityActual = cargar.ListaCiudades[int(op)-1]
+            cityActual.gConsola(cityActual.matriz, op)
 
 def chooseRecurso():
     global recursoActual
@@ -68,7 +71,6 @@ def chooseRecurso():
         print(Tabla)
         op = int(input("\033[;34m"+"Introduce el numero de recurso para la misión: "+'\033[0;m'))
         recursoActual = cityActual.recursos[int(op)-1]
-chooseRecurso()
 def chooseEntrada():
     global entradaActual
     if len(cityActual.entradas) == 1:
@@ -92,7 +94,6 @@ def chooseEntrada():
         print(Tabla)
         op = int(input("\033[;34m"+"Introduce el numero de Entrada para la misión: "+'\033[0;m'))
         entradaActual = cityActual.entradas[int(op)-1]    
-chooseEntrada()
 
 def heuristica(a,b):
     x = abs(a.x - b.x)
@@ -135,6 +136,8 @@ def pathFinding():
     global entradaActual
     global recursoActual
     global cityActual
+    global misionID 
+    
 
     openSet = lista.LinkedList()
     closedSet = lista.LinkedList()
@@ -167,9 +170,6 @@ def pathFinding():
             columna.addVecinos()
     fin = cityActual.escenario[recursoActual[0]-1][recursoActual[1]-1]
     principio = cityActual.escenario[entradaActual[0]-1][entradaActual[1]-1]
-    print(principio)
-    print(fin)
-    count = 0
     openSet.Append(principio)
 
 
@@ -192,7 +192,7 @@ def pathFinding():
                 camino.Append(temporal)
                 exito = True
                 cityActual.setMision()
-                dronMision = dronActual
+                dronCapacidad = deepcopy(dronActual.capacidad)
 
                 while temporal.padre != principio:
                      temporal = temporal.padre
@@ -208,8 +208,9 @@ def pathFinding():
                         cityActual.mision[spot.y][spot.x]='R+'  
 
                     elif spot.tipo == 2:
-                        if (dronMision.capacidad) >= spot.c:
-                            dronMision.capacidad -+ spot.c
+                        print(dronCapacidad)
+                        if dronCapacidad >= spot.c:
+                            dronCapacidad -= spot.c
                             cityActual.mision[spot.y][spot.x]='M+' 
                             exito = True
                         else:
@@ -230,16 +231,17 @@ def pathFinding():
                 if exito:
                     for spot in camino:
                         if spot.tipo == 2:
+                            dronActual.capacidad -= spot.c
                             for unidad in cityActual.militares:
                                 if unidad.fila == spot.y and unidad.columna == spot.x:
-                                    unidad.combate = 0
-
-
-
+                                    cityActual.militares.Remove(unidad)
+                                    cityActual.matriz[spot.y][spot.x] = ' '
 
                     print("\t\033[;32m"+'CAMINO ENCONTRADO'+'\033[0;m')
-                    cityActual.gConsola(1)
-                    cityActual.gMision('Misión rescate')
+                    cityActual.gConsola(cityActual.mision, 1)
+                    cityActual.gMision('Misión extracción')
+                else:
+                    print("\t\033[;31m"+'NO HAY CAMINO POSIBLE'+'\033[0;m')
                 terminado = True
             else: #SI NO HEMOS LLEGADO AL FINAL, SEGUIMOS
                 openSet.Remove(actual)
@@ -270,4 +272,10 @@ def pathFinding():
             print("\t\033[;31m"+'NO HAY CAMINO POSIBLE'+'\033[0;m')
             terminado = True    
 
-pathFinding() 
+
+def mision():
+    chooseDron(cargar.ChapinFighter)
+    chooseCity()
+    chooseRecurso()
+    chooseEntrada()
+    pathFinding() 

@@ -24,7 +24,7 @@
             <unidadMilitar fila="8" columna="16">20</unidadMilitar>
             <unidadMilitar fila="11" columna="7">20</unidadMilitar>
             <unidadMilitar fila="11" columna="15">20</unidadMilitar>
-            <unidadMilitar fila="14" columna="11">20</unidadMilitar>
+            <unidadMilitar fila="14" columna="10">20</unidadMilitar>
         </ciudad>
         <ciudad>
             <nombre filas="10" columnas="10">CiudadGuate</nombre>

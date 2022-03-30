@@ -15,9 +15,9 @@ def leer():
     global ChapinFighter
 
 
-    path = 'x'#input("Introduzca la dirreción del XML:\n")
+    path = input("Introduzca la dirreción del XML:\n")
     try:
-        tree = ET.parse('entrada.xml')
+        tree = ET.parse(path)
         root = tree.getroot()#configuracion
         ###################################################################################
         for ciudad in root[0]:#root[0] es listaCiudades
@@ -97,9 +97,5 @@ def leer():
     except:
         print("\t\033[;31m"+ path, "no encontrado"+'\033[0;m')
 
-leer()
-leer()
-for c in ListaCiudades:
-    c.gConsola(1)
-    c.graph(c.nombre)
+
 

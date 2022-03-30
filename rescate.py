@@ -28,23 +28,24 @@ def chooseDron(dronTipo):
         print(Tabla)
         op = int(input("\033[;34m"+"Introduce el numero de robot para la misión: "+'\033[0;m'))
         dronActual = dronTipo[int(op)-1]
-    print(dronActual)
-chooseDron(cargar.ChapinRescue)
 
 def chooseCity():
     global cityActual
     if len(cargar.ListaCiudades) == 1:
         cityActual = cargar.ListaCiudades[0]
-        cityActual.gConsola(op)
+        cityActual.gConsola(cityActual.matriz, op)
     elif len(cargar.ListaCiudades)>1: 
         n=0
         for ciudad in cargar.ListaCiudades:
             n+=1
-            ciudad.gConsola(n)
+            ciudad.gConsola(ciudad.matriz, n)
         op = int(input("\033[;34m"+"Introduce el numero de ciudad para la misión: "+'\033[0;m'))
-        cityActual = cargar.ListaCiudades[int(op)-1]
-        cityActual.gConsola(op)
-chooseCity()
+        if op > len(cargar.ListaCiudades):
+            print("\t\033[;31m"+'Introduce un numero entre 1 y '+str(len(cargar.ListaCiudades))+'\033[0;m')
+            chooseCity()
+        else:
+            cityActual = cargar.ListaCiudades[int(op)-1]
+            cityActual.gConsola(cityActual.matriz, op)
 
 def chooseCivil():
     global civilActual
@@ -68,7 +69,6 @@ def chooseCivil():
         print(Tabla)
         op = int(input("\033[;34m"+"Introduce el numero de civil a rescatar para la misión: "+'\033[0;m'))
         civilActual = cityActual.civiles[int(op)-1]
-chooseCivil()
 def chooseEntrada():
     global entradaActual
     if len(cityActual.entradas) == 1:
@@ -92,7 +92,6 @@ def chooseEntrada():
         print(Tabla)
         op = int(input("\033[;34m"+"Introduce el numero de Entrada para la misión: "+'\033[0;m'))
         entradaActual = cityActual.entradas[int(op)-1]    
-chooseEntrada()
 
 def heuristica(a,b):
     x = abs(a.x - b.x)
@@ -139,6 +138,8 @@ def pathFinding():
     openSet = lista.LinkedList()
     closedSet = lista.LinkedList()
     camino = lista.LinkedList()
+    cityActual.mision = lista.LinkedList()
+    cityActual.setMision()
 
     terminado = False
 
@@ -162,9 +163,6 @@ def pathFinding():
             columna.addVecinos()
     fin = cityActual.escenario[civilActual[0]-1][civilActual[1]-1]
     principio = cityActual.escenario[entradaActual[0]-1][entradaActual[1]-1]
-    print(principio)
-    print(fin)
-    count = 0
     openSet.Append(principio)
 
 
@@ -184,9 +182,7 @@ def pathFinding():
             if actual == fin:#SI HEMOS LLEGADO AL FINAL BUSCAMOS EL CAMINO DE VUELTA
                 temporal = actual
                 camino.Append(temporal)
-                cityActual.setMision()
 
-                print(principio.padre)
                 while temporal.padre != principio:
                      temporal = temporal.padre
                      camino.Append(temporal)
@@ -205,7 +201,7 @@ def pathFinding():
                         cityActual.mision[spot.y][spot.x]='+' 
                 cityActual.mision[fin.y][fin.x]='C'
                 print("\t\033[;32m"+'CAMINO ENCONTRADO'+'\033[0;m')
-                cityActual.gConsola(1)
+                cityActual.gConsola(cityActual.mision,1)
                 cityActual.gMision('Misión rescate')
                 terminado = True
             else: #SI NO HEMOS LLEGADO AL FINAL, SEGUIMOS
@@ -229,4 +225,11 @@ def pathFinding():
             print("\t\033[;31m"+'NO HAY CAMINO POSIBLE'+'\033[0;m')
             terminado = True    
 
-pathFinding() 
+
+def mision():
+    chooseDron(cargar.ChapinRescue)
+    chooseCity()
+    chooseCivil()
+    chooseEntrada()
+    pathFinding() 
+
