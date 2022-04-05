@@ -4,6 +4,7 @@ import linkedList as lista
 dronActual = None
 cityActual = None
 civilActual = None
+nmision = 0
 
 
 def chooseDron(dronTipo):
@@ -34,6 +35,7 @@ def chooseCity():
     if len(cargar.ListaCiudades) == 1:
         cityActual = cargar.ListaCiudades[0]
         cityActual.gConsola(cityActual.matriz, op)
+   
     elif len(cargar.ListaCiudades)>1: 
         n=0
         for ciudad in cargar.ListaCiudades:
@@ -134,6 +136,7 @@ def pathFinding():
     global entradaActual
     global civilActual
     global cityActual
+    global nmision
 
     openSet = lista.LinkedList()
     closedSet = lista.LinkedList()
@@ -202,7 +205,8 @@ def pathFinding():
                 cityActual.mision[fin.y][fin.x]='C'
                 print("\t\033[;32m"+'CAMINO ENCONTRADO'+'\033[0;m')
                 cityActual.gConsola(cityActual.mision,1)
-                cityActual.gMision('Misión rescate')
+                nmision+=1
+                cityActual.gMision('Misión rescate '+str(nmision))
                 terminado = True
             else: #SI NO HEMOS LLEGADO AL FINAL, SEGUIMOS
                 openSet.Remove(actual)
@@ -228,8 +232,14 @@ def pathFinding():
 
 def mision():
     chooseDron(cargar.ChapinRescue)
-    chooseCity()
-    chooseCivil()
-    chooseEntrada()
-    pathFinding() 
+    if len(cargar.ListaCiudades) == 0:
+         print("\t\033[;31m"+'NO HAY CIUDADES CARGADAS'+'\033[0;m')
+    else:
+        chooseCity()
+        if len(cityActual.civiles) == 0:
+            print("\t\033[;31m"+'NO HAY CIVILES EN LA CIUDAD'+'\033[0;m')
+        else:
+            chooseCivil()
+            chooseEntrada()
+            pathFinding() 
 

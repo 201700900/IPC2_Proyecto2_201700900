@@ -3,6 +3,7 @@ import linkedList as lista
 import milicia
 import city
 import dron
+import tkinter, tkinter.filedialog, re
 
 ListaCiudades = lista.LinkedList()
 ChapinRescue = lista.LinkedList()
@@ -15,7 +16,12 @@ def leer():
     global ChapinFighter
 
 
-    path = input("Introduzca la dirreción del XML:\n")
+    root = tkinter.Tk() #esto se hace solo para eliminar la ventanita de Tkinter 
+    root.withdraw() #ahora se cierra 
+    path = tkinter.filedialog.askopenfilename() #abre el explorador de archivos y guarda la seleccion en la variable!
+
+    
+
     try:
         tree = ET.parse(path)
         root = tree.getroot()#configuracion

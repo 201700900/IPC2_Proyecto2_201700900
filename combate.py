@@ -5,7 +5,7 @@ import linkedList as lista
 dronActual = None
 cityActual = None
 recursoActual = None
-misionID = 1
+misionID = 0
 
 
 def chooseDron(dronTipo):
@@ -226,7 +226,7 @@ def pathFinding():
                         
                     cityActual.mision[principio.y][principio.x]='E' 
                     cityActual.mision[fin.y][fin.x]='R'  
-                    cityActual.gMision(str(x))
+                    # cityActual.gMision(str(x))
 
                 if exito:
                     for spot in camino:
@@ -239,7 +239,8 @@ def pathFinding():
 
                     print("\t\033[;32m"+'CAMINO ENCONTRADO'+'\033[0;m')
                     cityActual.gConsola(cityActual.mision, 1)
-                    cityActual.gMision('Misión extracción')
+                    misionID += 1
+                    cityActual.gMision('Misión extracción '+ str(misionID))
                 else:
                     print("\t\033[;31m"+'NO HAY CAMINO POSIBLE'+'\033[0;m')
                 terminado = True
@@ -275,7 +276,14 @@ def pathFinding():
 
 def mision():
     chooseDron(cargar.ChapinFighter)
-    chooseCity()
-    chooseRecurso()
-    chooseEntrada()
-    pathFinding() 
+    if len(cargar.ListaCiudades) == 0:
+         print("\t\033[;31m"+'NO HAY CIUDADES CARGADAS'+'\033[0;m')
+    else:
+        chooseCity()
+        if len(cityActual.civiles) == 0:
+            print("\t\033[;31m"+'NO HAY RECURSOS EN LA CIUDAD'+'\033[0;m')
+        else:
+
+            chooseRecurso()
+            chooseEntrada()
+            pathFinding() 
