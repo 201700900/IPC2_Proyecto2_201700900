@@ -231,15 +231,18 @@ def pathFinding():
 
 
 def mision():
-    chooseDron(cargar.ChapinRescue)
-    if len(cargar.ListaCiudades) == 0:
-         print("\t\033[;31m"+'NO HAY CIUDADES CARGADAS'+'\033[0;m')
+    if len(cargar.ChapinRescue) ==0:
+         print("\t\033[;31m"+'NO HAY ChapinRescue CARGADOS'+'\033[0;m')
     else:
-        chooseCity()
-        if len(cityActual.civiles) == 0:
-            print("\t\033[;31m"+'NO HAY CIVILES EN LA CIUDAD'+'\033[0;m')
+        chooseDron(cargar.ChapinRescue)
+        if len(cargar.ListaCiudades) == 0:
+            print("\t\033[;31m"+'NO HAY CIUDADES CARGADAS'+'\033[0;m')
         else:
-            chooseCivil()
-            chooseEntrada()
-            pathFinding() 
+            chooseCity()
+            if len(cityActual.civiles) == 0:
+                print("\t\033[;31m"+'NO HAY CIVILES EN LA CIUDAD'+'\033[0;m')
+            else:
+                chooseCivil()
+                chooseEntrada()
+                pathFinding() 
 

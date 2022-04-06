@@ -275,15 +275,18 @@ def pathFinding():
 
 
 def mision():
-    chooseDron(cargar.ChapinFighter)
-    if len(cargar.ListaCiudades) == 0:
-         print("\t\033[;31m"+'NO HAY CIUDADES CARGADAS'+'\033[0;m')
+    if len(cargar.ChapinFighter) ==0:
+         print("\t\033[;31m"+'NO HAY ChapinFighter CARGADOS'+'\033[0;m')
     else:
-        chooseCity()
-        if len(cityActual.civiles) == 0:
-            print("\t\033[;31m"+'NO HAY RECURSOS EN LA CIUDAD'+'\033[0;m')
+        chooseDron(cargar.ChapinFighter)
+        if len(cargar.ListaCiudades) == 0:
+            print("\t\033[;31m"+'NO HAY CIUDADES CARGADAS'+'\033[0;m')
         else:
+            chooseCity()
+            if len(cityActual.civiles) == 0:
+                print("\t\033[;31m"+'NO HAY RECURSOS EN LA CIUDAD'+'\033[0;m')
+            else:
 
-            chooseRecurso()
-            chooseEntrada()
-            pathFinding() 
+                chooseRecurso()
+                chooseEntrada()
+                pathFinding() 
